@@ -8,7 +8,13 @@ var currentHumidityEl = document.querySelector('#current-humid')
 var currentWindEl = document.querySelector('#current-wind');
 var currentIconEl = document.querySelector('#current-icon');
 // var currentUVEl = document.querySelector('#current-uv');
-
+var forecastContainer = document.querySelector("#forecast-container");
+var forecastCards = document.querySelectorAll(".card");
+var forecastDateEl = document.querySelector('#date');
+var forecastIconEl = document.querySelector('#icon');
+var forecastTempEl = document.querySelector('#temp');
+var forecastHumidEl = document.querySelector('#humid');
+var forecastWindEl = document.querySelector('#wind');
 
 function getCityParams() {
     var searchParamsArr = document.location.search.split('&');
@@ -46,7 +52,7 @@ function currentWeather(cityLat, cityLon) {
         .then(function (data) {
             console.log(data)
             var currentIcon = data.weather[0].icon
-            var currentIconURL = 'http://openweathermap.org/img/wn/' + currentIcon + '.png';
+            var currentIconURL = 'http://openweathermap.org/img/wn/' + currentIcon + '@2x.png';
             var currentTemp = data.main.temp;
             var currentHumid = data.main.humidity;
             var currentWind = data.wind.speed;
@@ -72,9 +78,21 @@ function weatherForecast(cityLat, cityLon) {
         })
         .then(function (data) {
             console.log(data)
+            // var cardsArr = Array.from(forecastCards);
+            for (i = 0; i < forecastCards.length; i++) {
+                    var forecastIcon = data.list[i].weather[i].icon;
+                    var forecastIconURL = 'http://openweathermap.org/img/wn/' + forecastIcon + '.png';
+                    forecastIconEl.innerHTML = '<img src="' + forecastIconURL + '"></img>';
+                    forecastDateEl.textContent = data.list[i].dt_txt;
+                    forecastTempEl.textContent = data.list[i].main.temp;
+                    forecastHumidEl.textContent = data.list[i].main.humidity;
+                    forecastWindEl.textContent = data.list[i].wind.speed;
+                    
+                } 
 
         })
 }
+
 
 
 
