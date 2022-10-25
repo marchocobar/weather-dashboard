@@ -9,7 +9,8 @@ var currentWindEl = document.querySelector('#current-wind');
 var currentIconEl = document.querySelector('#current-icon');
 var forecastContainer = document.querySelector("#forecast-container");
 var forecastCards = document.querySelectorAll(".card");
-var forecastArr = [];
+var searhContainer = document.querySelector('#search-container');
+// var cities = [];
 
 
 function getCityParams() {
@@ -74,16 +75,16 @@ function weatherForecast(cityLat, cityLon) {
         })
         .then(function (data) {
             console.log(data)
-            
-            for (i=0; i < data.list.length; i=i+8) {
+
+            for (i = 0; i < data.list.length; i = i + 8) {
                 var resultCard = document.createElement('div');
                 resultCard.classList.add('card', 'm-1');
                 resultCard.style.width = '10rem';
-              
+
                 var resultBody = document.createElement('div');
                 resultBody.classList.add('card-body');
                 resultCard.append(resultBody);
-              
+
                 var forecastIconEl = document.createElement('p');
                 var forecastIcon = data.list[i].weather[0].icon;
                 var forecastIconURL = 'http://openweathermap.org/img/wn/' + forecastIcon + '.png';
@@ -95,18 +96,16 @@ function weatherForecast(cityLat, cityLon) {
                 forecastTempEl.innerHTML = 'Temp: ' + data.list[i].main.temp + '°F';
                 var forecastHumidEl = document.createElement('p');
                 forecastHumidEl.innerHTML = 'Humidity: ' + data.list[i].main.humidity + '%';
-                var forecastWindEl = document.createElement('p'); 
+                var forecastWindEl = document.createElement('p');
                 forecastWindEl.innerHTML = 'Wind Speed: ' + data.list[i].wind.speed + 'mph';
-                resultBody.append(forecastDateEl,forecastIconEl,forecastTempEl,forecastHumidEl,forecastWindEl);
+                resultBody.append(forecastDateEl, forecastIconEl, forecastTempEl, forecastHumidEl, forecastWindEl);
                 forecastContainer.append(resultCard);
 
-                    
-                } 
+
+            }
 
         })
 }
-
-
 
 
 function searchSubmit(event) {
@@ -123,7 +122,43 @@ function searchSubmit(event) {
 
 }
 
+function renderSearches() {
+    var storedCities = JSON.parse(localStorage.getItem("cities"));
+
+    cities = storedCities
+    for (i = 0; i < cities.length; i++) {
+        var city = cities[i];
+        var buttonEl = document.createElement('button');
+        buttonEl.classList.add('btn', 'btn-info', 'm-2');
+        buttonEl.innerHTML = city;
+        searhContainer.append(buttonEl);
+
+    }
+    // buttonEl.addEventListener('click', function () {
+    //     buttonEl.innerHTML === cityInput.value;
+    //     searchSubmit();
+    // })
+}
+
+
 citySearchBtn.addEventListener('click', searchSubmit);
+citySearchBtn.addEventListener('click', function (event) {
+    event.preventDefault();
+    var cities = JSON.parse(localStorage.getItem("cities")) || [];
+    var cityText = cityInput.value;
+    if (cityText === "") {
+        return;
+    }
+    cities.push(cityText);
+    cityInput.value = "";
+    localStorage.setItem("cities", JSON.stringify(cities));
 
+})
+// buttonEl.addEventListener('click', function(event){
+//     buttonEl.value = cityInput.value;
+//     searchSubmit();
+// })
 
+renderSearches();
 getCityParams();
+
