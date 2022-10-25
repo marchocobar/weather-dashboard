@@ -7,14 +7,10 @@ var currentTempEl = document.querySelector('#current-temp');
 var currentHumidityEl = document.querySelector('#current-humid')
 var currentWindEl = document.querySelector('#current-wind');
 var currentIconEl = document.querySelector('#current-icon');
-// var currentUVEl = document.querySelector('#current-uv');
 var forecastContainer = document.querySelector("#forecast-container");
 var forecastCards = document.querySelectorAll(".card");
-var forecastDateEl = document.querySelector('#date');
-var forecastIconEl = document.querySelector('#icon');
-var forecastTempEl = document.querySelector('#temp');
-var forecastHumidEl = document.querySelector('#humid');
-var forecastWindEl = document.querySelector('#wind');
+var forecastArr = [];
+
 
 function getCityParams() {
     var searchParamsArr = document.location.search.split('&');
@@ -78,15 +74,32 @@ function weatherForecast(cityLat, cityLon) {
         })
         .then(function (data) {
             console.log(data)
-            // var cardsArr = Array.from(forecastCards);
-            for (i = 0; i < forecastCards.length; i++) {
-                    var forecastIcon = data.list[i].weather[i].icon;
-                    var forecastIconURL = 'http://openweathermap.org/img/wn/' + forecastIcon + '.png';
-                    forecastIconEl.innerHTML = '<img src="' + forecastIconURL + '"></img>';
-                    forecastDateEl.textContent = data.list[i].dt_txt;
-                    forecastTempEl.textContent = data.list[i].main.temp;
-                    forecastHumidEl.textContent = data.list[i].main.humidity;
-                    forecastWindEl.textContent = data.list[i].wind.speed;
+            
+            for (i=0; i < data.list.length; i=i+8) {
+                var resultCard = document.createElement('div');
+                resultCard.classList.add('card', 'm-1');
+                resultCard.style.width = '10rem';
+              
+                var resultBody = document.createElement('div');
+                resultBody.classList.add('card-body');
+                resultCard.append(resultBody);
+              
+                var forecastIconEl = document.createElement('p');
+                var forecastIcon = data.list[i].weather[0].icon;
+                var forecastIconURL = 'http://openweathermap.org/img/wn/' + forecastIcon + '.png';
+                forecastIconEl.innerHTML = '<img src="' + forecastIconURL + '"></img>';
+
+                var forecastDateEl = document.createElement('p');
+                forecastDateEl.innerHTML = data.list[i].dt_txt;
+                var forecastTempEl = document.createElement('p');
+                forecastTempEl.innerHTML = 'Temp: ' + data.list[i].main.temp + '°F';
+                var forecastHumidEl = document.createElement('p');
+                forecastHumidEl.innerHTML = 'Humidity: ' + data.list[i].main.humidity + '%';
+                var forecastWindEl = document.createElement('p'); 
+                forecastWindEl.innerHTML = 'Wind Speed: ' + data.list[i].wind.speed + 'mph';
+                resultBody.append(forecastDateEl,forecastIconEl,forecastTempEl,forecastHumidEl,forecastWindEl);
+                forecastContainer.append(resultCard);
+
                     
                 } 
 
