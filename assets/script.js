@@ -76,7 +76,7 @@ function weatherForecast(cityLat, cityLon) {
         .then(function (data) {
             console.log(data)
 
-            for (i = 0; i < data.list.length; i = i + 8) {
+            for (i = 7; i < data.list.length; i = i + 8) {
                 var resultCard = document.createElement('div');
                 resultCard.classList.add('card', 'm-1');
                 resultCard.style.width = '10rem';
@@ -129,7 +129,7 @@ function renderSearches() {
     for (i = 0; i < cities.length; i++) {
         var city = cities[i];
         var buttonEl = document.createElement('button');
-        buttonEl.classList.add('btn', 'btn-info', 'm-2');
+        buttonEl.classList.add('btnEl', 'btn', 'btn-info', 'm-2');
         buttonEl.innerHTML = city;
         searhContainer.append(buttonEl);
 
@@ -140,7 +140,7 @@ function renderSearches() {
     // })
 }
 
-
+ 
 citySearchBtn.addEventListener('click', searchSubmit);
 citySearchBtn.addEventListener('click', function (event) {
     event.preventDefault();
@@ -154,10 +154,7 @@ citySearchBtn.addEventListener('click', function (event) {
     localStorage.setItem("cities", JSON.stringify(cities));
 
 })
-// buttonEl.addEventListener('click', function(event){
-//     buttonEl.value = cityInput.value;
-//     searchSubmit();
-// })
+
 
 renderSearches();
 getCityParams();
