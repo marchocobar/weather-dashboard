@@ -10,7 +10,8 @@ var currentIconEl = document.querySelector('#current-icon');
 var forecastContainer = document.querySelector("#forecast-container");
 var forecastCards = document.querySelectorAll(".card");
 var searhContainer = document.querySelector('#search-container');
-// var cities = [];
+
+
 
 
 function getCityParams() {
@@ -124,7 +125,6 @@ function searchSubmit(event) {
 
 function renderSearches() {
     var storedCities = JSON.parse(localStorage.getItem("cities"));
-
     cities = storedCities
     for (i = 0; i < cities.length; i++) {
         var city = cities[i];
@@ -132,15 +132,27 @@ function renderSearches() {
         buttonEl.classList.add('btnEl', 'btn', 'btn-info', 'm-2');
         buttonEl.innerHTML = city;
         searhContainer.append(buttonEl);
+        prevSearchSubmit(buttonEl)
 
     }
-    // buttonEl.addEventListener('click', function () {
-    //     buttonEl.innerHTML === cityInput.value;
-    //     searchSubmit();
-    // })
+    
+    
 }
 
- 
+
+function prevSearchSubmit(buttonEl) {
+        buttonEl.addEventListener('click', function (event) {
+            event.preventDefault();
+            prevQueryString = './index.html?q=' + buttonEl.innerHTML + '&apikey=' + apiKey;
+            location.assign(prevQueryString);
+            console.log(prevQueryString)
+        })
+
+}
+
+
+
+
 citySearchBtn.addEventListener('click', searchSubmit);
 citySearchBtn.addEventListener('click', function (event) {
     event.preventDefault();
@@ -156,6 +168,5 @@ citySearchBtn.addEventListener('click', function (event) {
 })
 
 
-renderSearches();
 getCityParams();
-
+renderSearches();
