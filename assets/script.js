@@ -102,7 +102,6 @@ function weatherForecast(cityLat, cityLon) {
                 resultBody.append(forecastDateEl, forecastIconEl, forecastTempEl, forecastHumidEl, forecastWindEl);
                 forecastContainer.append(resultCard);
 
-
             }
 
         })
@@ -133,10 +132,8 @@ function renderSearches() {
         buttonEl.innerHTML = city;
         searhContainer.append(buttonEl);
         prevSearchSubmit(buttonEl)
-
     }
-    
-    
+     
 }
 
 
