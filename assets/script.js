@@ -20,6 +20,10 @@ function getCityParams() {
     console.log(searchParamsArr);
     var locQueryUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityParam + ',US' + '&appid=' + apiKey;
     console.log(locQueryUrl);
+    if(!cityParam) {
+        console.log('Please enter a city');
+        return;
+    }
     fetch(locQueryUrl)
         .then(function (response) {
             if (!response.ok) {
@@ -36,6 +40,8 @@ function getCityParams() {
             cityNameEl.textContent = cityName;
             currentWeather(cityLat, cityLon);
         })
+        
+        
 }
 
 function currentWeather(cityLat, cityLon) {
@@ -125,6 +131,9 @@ function searchSubmit(event) {
 function renderSearches() {
     var storedCities = JSON.parse(localStorage.getItem("cities"));
     cities = storedCities
+    if (!cities) {
+        console.log('no saved inputs yet')
+    } else {
     for (i = 0; i < cities.length; i++) {
         var city = cities[i];
         var buttonEl = document.createElement('button');
@@ -133,7 +142,7 @@ function renderSearches() {
         searhContainer.append(buttonEl);
         prevSearchSubmit(buttonEl)
     }
-     
+    } 
 }
 
 
